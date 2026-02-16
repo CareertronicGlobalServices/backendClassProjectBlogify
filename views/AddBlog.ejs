@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include("./partials/head") %>
+  </head>
+
+  <body class="bg-light">
+    <%- include("./partials/nav") %>
+
+    <div class="container py-5">
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <!-- Card -->
+          <div class="card shadow-sm border-0">
+            <div class="card-body p-4">
+              <h3 class="mb-4 text-center">Create New Blog</h3>
+
+              <form
+                action="/blog/addblog"
+                method="POST"
+                enctype="multipart/form-data"
+              >
+                <!-- Blog Image -->
+                <div class="mb-3">
+                  <label for="CoverImg" class="form-label"
+                    >Upload Blog Image</label
+                  >
+                  <input
+                    type="file"
+                    class="form-control"
+                    id="CoverImg"
+                    name="CoverImg"
+                    accept="image/*"
+                  />
+                </div>
+
+                <!-- Title -->
+                <div class="mb-3">
+                  <label for="title" class="form-label">Blog Title</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="title"
+                    name="title"
+                    placeholder="Enter blog title"
+                    required
+                  />
+                </div>
+
+                <!-- Content -->
+                <div class="mb-4">
+                  <label for="body" class="form-label">Blog Content</label>
+                  <textarea
+                    class="form-control"
+                    id="body"
+                    name="body"
+                    rows="6"
+                    placeholder="Write your blog here..."
+                    required
+                  ></textarea>
+                </div>
+
+                <!-- Submit -->
+                <div class="d-grid">
+                  <a href="/">
+                    <button type="submit" class="btn btn-primary btn-lg">
+                      Publish Blog
+                    </button></a
+                  >
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <%- include("./partials/script") %>
+  </body>
+</html>
