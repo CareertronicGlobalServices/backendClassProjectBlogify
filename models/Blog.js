@@ -9,7 +9,6 @@ const BlogSchema = new Schema(
     body: {
       type: String,
       required: true,
-      unique: true,
     },
 
     CoverImg: {

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= blog.title %></title>
+  <%- include('partials/head') %>
+</head>
+
+<body class="bg-light">
+
+<div class="container mt-4">
+
+  <!-- Blog Card -->
+  <div class="card shadow">
+    <img src="<%= blog.CoverImg %>" class="card-img-top" style="max-height:400px; object-fit:cover;">
+    <div class="card-body">
+      <h2><%= blog.title %></h2>
+     <p class="text-muted">
+  By <%= blog.createdBy ? blog.createdBy.fullname : "Unknown Author" %>
+</p>
+
+      <hr>
+      <p><%= blog.body %></p>
+    </div>
+  </div>
+
+  <!-- Comment Section -->
+  <div class="mt-4">
+
+    <h4>Comments</h4>
+
+    <% if(user){ %>
+      <form method="POST" action="/blog/comment/<%= blog._id %>">
+        <div class="mb-3">
+          <textarea name="content" class="form-control" placeholder="Write comment..." required></textarea>
+        </div>
+        <button class="btn btn-primary">Post Comment</button>
+      </form>
+    <% } else { %>
+    <a href="/user/signin">  <p class="text-muted">Login to comment</p></a>
+    <% } %>
+
+    <hr>
+
+    <% comments.forEach(c => { %>
+      <div class="card mb-2">
+        <div class="card-body">
+          <strong><%= c.createdBy.fullname %></strong>
+          <small class="text-muted float-end">
+            <%= new Date(c.createdAt).toLocaleString() %>
+          </small>
+          <p class="mb-0"><%= c.content %></p>
+        </div>
+      </div>
+    <% }) %>
+
+  </div>
+</div>
+<%- include('partials/script') %>
+</body>
+</html>

@@ -1,4 +1,5 @@
 const { Router } = require("express");
+const Comment = require("../models/comment");
 
 const router = Router();
 const multer = require("multer");
@@ -31,10 +32,50 @@ router.post("/addblog", upload.single("CoverImg"), (req, res) => {
   Blog.create({
     title,
     body,
-    createdBy: req.user_id,
+    createdBy: req.user._id,
     CoverImg: `/uploads/${req.file.filename}`,
   });
   return res.redirect(`/`);
+});
+
+////---------------------------------
+router.get("/myblogs", async (req, res) => {
+  if (!req.user) return res.redirect("/user/signin");
+  console.log(req.user);
+  const myBlogs = await Blog.find({ createdBy: req.user._id }).sort({
+    createdAt: -1,
+  });
+  console.log(myBlogs);
+  res.render("MyBlogs", {
+    user: req.user,
+    blogs: myBlogs,
+  });
+});
+//--------------
+router.get("/:id", async (req, res) => {
+  const blog = await Blog.findById(req.params.id).populate("createdBy");
+
+  const comments = await Comment.find({ blogId: req.params.id })
+    .populate("createdBy")
+    .sort({ createdAt: -1 });
+
+  res.render("BlogDetails", {
+    user: req.user,
+    blog,
+    comments,
+  });
+});
+
+router.post("/comment/:blogId", async (req, res) => {
+  if (!req.user) return res.redirect("/user/signin");
+
+  await Comment.create({
+    content: req.body.content,
+    blogId: req.params.blogId,
+    createdBy: req.user._id,
+  });
+
+  res.redirect(`/blog/${req.params.blogId}`);
 });
 
 module.exports = router;
